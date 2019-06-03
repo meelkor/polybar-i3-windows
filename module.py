@@ -55,6 +55,7 @@ def on_change(i3, e):
 def render_apps(i3):
     tree = i3.get_tree()
     apps = tree.leaves()
+    apps.sort(key=lambda app: app.workspace().name)
 
     out = '%{O12}'.join(format_entry(app) for app in apps)
 
