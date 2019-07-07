@@ -7,6 +7,8 @@ import i3ipc
 import platform
 from time import sleep
 
+from icon_resolver import IconResolver
+
 #: Max length of single window title
 MAX_LENGTH = 26
 #: Base 1 index of the font that should be used for icons
@@ -31,6 +33,8 @@ FORMATERS = {
 
 SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
 COMMAND_PATH = os.path.join(SCRIPT_DIR, 'command.py')
+
+icon_resolver = IconResolver(ICONS)
 
 
 def main():
@@ -78,9 +82,13 @@ def make_title(app):
     return '%%{A1:%s %s:}%s%%{A-}' % (COMMAND_PATH, app.id, out)
 
 def get_prefix(app):
-    klass = app.window_class
-    return ('%%{T%s}%s%%{T-}  ' % (ICON_FONT, ICONS[klass]))\
-        if klass in ICONS else ICONS['default']
+    icon = icon_resolver.resolve({
+        'class': app.window_class,
+        'name': app.name,
+    })
+
+    return ('%%{T%s}%s%%{T-}' % (ICON_FONT, icon))
+
 
 def format_title(app):
     klass = app.window_class
