@@ -47,8 +47,8 @@ def main():
     i3 = i3ipc.Connection()
 
     i3.on('workspace::focus', on_change)
-    i3.on("window::focus", on_change)
-    i3.on("window", on_change)
+    i3.on('window::focus', on_change)
+    i3.on('window', on_change)
 
     loop = asyncio.get_event_loop()
 
@@ -62,6 +62,7 @@ def main():
 def on_change(i3, e):
     render_apps(i3)
 
+
 def render_apps(i3):
     tree = i3.get_tree()
     apps = tree.leaves()
@@ -71,21 +72,24 @@ def render_apps(i3):
 
     print(out, flush=True)
 
+
 def format_entry(app):
     title = make_title(app)
-    u_color = '#4e9fb1' if app.focused else\
+    u_color = '#b4619a' if app.focused else\
         '#e84f4f' if app.urgent else\
         '#404040'
 
     return '%%{u%s} %s %%{u-}' % (u_color, title)
+
 
 def make_title(app):
     out = get_prefix(app) + format_title(app)
 
     if app.focused:
         out = '%{F#fff}' + out + '%{F-}'
-    
+
     return '%%{A1:%s %s:}%s%%{A-}' % (COMMAND_PATH, app.id, out)
+
 
 def get_prefix(app):
     icon = icon_resolver.resolve({
