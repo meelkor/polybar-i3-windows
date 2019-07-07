@@ -17,13 +17,19 @@ ICON_FONT = 3
 HOSTNAME = platform.node()
 USER = getpass.getuser()
 
-ICONS = {
-    'Chromium': '\ue743',
-    'Firefox': '\uf738',
-    'URxvt': '\ue795',
-    'Code': '\ue70c',
-    'default': '\ufaae',
-}
+ICONS = [
+    ('class=*.slack.com', '\uf3ef'),
+
+    ('class=Chromium', '\ue743'),
+    ('class=Firefox', '\uf738'),
+    ('class=URxvt', '\ue795'),
+    ('class=Code', '\ue70c'),
+    ('class=code-oss-dev', '\ue70c'),
+
+    ('name=mutt', '\uf199'),
+
+    ('*', '\ufaae'),
+]
 
 FORMATERS = {
     'Chromium': lambda title: title.replace(' - Chromium', ''),
