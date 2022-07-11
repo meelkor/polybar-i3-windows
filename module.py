@@ -10,12 +10,16 @@ from time import sleep
 from icon_resolver import IconResolver
 
 #: Max length of single window title
-MAX_LENGTH = 26
+MAX_LENGTH = 16
 #: Base 1 index of the font that should be used for icons
-ICON_FONT = 3
+ICON_FONT = 1
+TITLE_FONT = 2
 
 HOSTNAME = platform.node()
 USER = getpass.getuser()
+
+UNFOCUSED_COLOR = "#6e6e6e"
+FOCUSED_COLOR = "#44ff50"
 
 ICONS = [
     ('class=*.slack.com', '\uf3ef'),
@@ -86,9 +90,11 @@ def make_title(app):
     out = get_prefix(app) + format_title(app)
 
     if app.focused:
-        out = '%{F#fff}' + out + '%{F-}'
+        out = '%{F' + FOCUSED_COLOR+'}' + out + '%{F-}'
+    else:
+        out = '%{F' + UNFOCUSED_COLOR+'}' + out  + '%{F-}'
 
-    return '%%{A1:%s %s:}%s%%{A-}' % (COMMAND_PATH, app.id, out)
+    return '%%{A1:%s %s:}%s%%{A1}' % (COMMAND_PATH, app.id, out)
 
 
 def get_prefix(app):
@@ -97,7 +103,7 @@ def get_prefix(app):
         'name': app.name,
     })
 
-    return ('%%{T%s}%s%%{T-}' % (ICON_FONT, icon))
+    return ('%%{T%s} %s %%{T-}' % (ICON_FONT, icon) )
 
 
 def format_title(app):
@@ -109,6 +115,6 @@ def format_title(app):
     if len(title) > MAX_LENGTH:
         title = title[:MAX_LENGTH - 3] + '...'
 
-    return title
+    return "%{T"+str(TITLE_FONT)+"}"+title+"%{T-}"
 
 main()
